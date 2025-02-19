@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Collection</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #b41e1e;
+        }
+
+        header {
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            z-index: 999;
+            padding: 15px;
+        }
+
+        header button {
+            padding: 10px 20px;
+            background-color: #ff6347;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        header button:hover {
+            background-color: #ff4500;
+        }
+
+        #main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 80px 20px 20px; /* Added padding to prevent content from being hidden behind the fixed header */
+            background-color: orangered;
+            background-image: url('https://img.freepik.com/free-photo/side-view-shawarma-with-fried-potatoes-ayran-splash-board-cookware_176474-3214.jpg?ga=GA1.1.510722377.1731594379&semt=ais_hybrid');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .items {
+            background-color: #fff;
+            margin: 15px;
+            padding: 20px;
+            width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .items:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .items img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .items p {
+            margin: 5px 0;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+
+        .items h3 {
+            font-size: 1.2em;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .ingredients {
+            font-weight: bold;
+        }
+
+        .tags {
+            color: #ff6347;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Recipe Collection</h1>
+    </header>
+
+    <div id="main"></div>
+
+    <script>
+        async function getData() {
+            const url = await fetch('https://dummyjson.com/recipes');
+            let data = await url.json();
+            let myData = data.recipes;
+            console.log(myData);
+
+            let recipes = myData.map((e) => {
+                return `
+                    <div class="items">
+                        <h3>${e.name}</h3>
+                        <p><span class="ingredients">Ingredients:</span> ${e.ingredients.slice(0, 40)}...</p>
+                        <p><span class="ingredients">Instructions:</span> ${e.instructions.slice(0, 40)}...</p>
+                        <p><strong>Prep Time:</strong> ${e.prepTimeMinutes} minutes</p>
+                        <p><strong>Cook Time:</strong> ${e.cookTimeMinutes} minutes</p>
+                        <p><strong>Servings:</strong> ${e.servings}</p>
+                        <p><strong>Difficulty:</strong> ${e.difficulty}</p>
+                        <p><strong>Cuisine:</strong> ${e.cuisine}</p>
+                        <p><strong>Calories/Serving:</strong> ${e.caloriesPerServing}</p>
+                        <p><span class="tags">Tags:</span> ${e.tags.join(", ")}</p>
+                    </div>
+                `;
+            }).join("");
+            document.getElementById('main').innerHTML = recipes;
+        }
+
+        getData();
+    </script>
+
+</body>
+</html>
+
